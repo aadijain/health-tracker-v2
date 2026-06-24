@@ -1,8 +1,8 @@
 /**
- * Today: log the day's weight, blood pressure, protein, and exercise.
- * Summary rings show protein progress and exercises done. Weight/BP save on
- * blur; protein is logged from the food list; exercises are checkboxes (Bonus
- * Activity also has a free-text note).
+ * Today: log a day's weight, blood pressure, protein, and exercise. The day is
+ * chosen by the header date picker (`app.viewDate`); summary rings show protein
+ * progress and exercises done. Weight/BP save on blur; protein is logged from
+ * the food list; exercises are checkboxes (Bonus has a note).
  */
 
 import type { ProteinZone } from "../../config";
@@ -28,7 +28,8 @@ const ZONE_COLOR: Record<ProteinZone | "none", string> = {
 };
 
 export function renderToday(app: App, container: HTMLElement): void {
-  const day = getDay(app.db, app.today);
+  const date = app.viewDate;
+  const day = getDay(app.db, date);
   const m = day.measurement;
   const zone = day.protein.zone;
 
@@ -118,7 +119,7 @@ export function renderToday(app: App, container: HTMLElement): void {
       <ul class="check-list">${checklist}</ul>
     </section>`;
 
-  wire(app, container);
+  wire(app, container, date);
 }
 
 /** Foods ordered most-recently-logged first, then the rest, so the empty-query
@@ -164,7 +165,7 @@ function ring(percent: number, color: string, center: string, caption: string): 
     </div>`;
 }
 
-function wire(app: App, container: HTMLElement): void {
+function wire(app: App, container: HTMLElement, date: string): void {
   const foodInput = container.querySelector<HTMLInputElement>("[data-food-input]");
   const foodList = container.querySelector<HTMLElement>("[data-food-list]");
   if (foodInput && foodList) {
@@ -182,7 +183,7 @@ function wire(app: App, container: HTMLElement): void {
   for (const input of container.querySelectorAll<HTMLInputElement>("[data-measure]")) {
     input.addEventListener("change", () => {
       const field = input.dataset.measure as "weight" | "systolic" | "diastolic" | "pulse";
-      upsertMeasurement(app.db, app.today, { [field]: parseNumber(input.value) });
+      upsertMeasurement(app.db, date, { [field]: parseNumber(input.value) });
       app.commit();
     });
   }
@@ -199,7 +200,7 @@ function wire(app: App, container: HTMLElement): void {
     }
     tryWrite(
       app,
-      () => logProtein(app.db, { date: app.today, food, quantity }),
+      () => logProtein(app.db, { date, food, quantity }),
       (message) => {
         if (logError) {
           logError.textContent = message;
@@ -211,22 +212,21 @@ function wire(app: App, container: HTMLElement): void {
 
   for (const button of container.querySelectorAll<HTMLButtonElement>("[data-del]")) {
     button.addEventListener("click", () => {
-      const id = Number(button.dataset.del);
-      deleteProteinEntry(app.db, id);
+      deleteProteinEntry(app.db, Number(button.dataset.del));
       app.commit();
     });
   }
 
   for (const box of container.querySelectorAll<HTMLInputElement>("[data-ex]")) {
     box.addEventListener("change", () => {
-      setExercise(app.db, app.today, box.dataset.ex ?? "", { done: box.checked });
+      setExercise(app.db, date, box.dataset.ex ?? "", { done: box.checked });
       app.commit();
     });
   }
 
   for (const note of container.querySelectorAll<HTMLInputElement>("[data-note]")) {
     note.addEventListener("change", () => {
-      setExercise(app.db, app.today, note.dataset.note ?? "", { note: note.value });
+      setExercise(app.db, date, note.dataset.note ?? "", { note: note.value });
       app.commit();
     });
   }

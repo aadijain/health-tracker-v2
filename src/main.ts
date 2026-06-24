@@ -33,6 +33,7 @@ function render(root: HTMLElement, app: App): void {
           <img class="app-logo" src="${import.meta.env.BASE_URL}favicon.svg" alt="" />
           <h1>${APP_NAME}</h1>
         </div>
+        <input type="date" class="header-date" data-date max="${app.today}" hidden />
       </div>
     </header>
     <main id="screen" class="screen"></main>
@@ -53,11 +54,20 @@ function render(root: HTMLElement, app: App): void {
 
   const screen = root.querySelector<HTMLElement>("#screen");
   const buttons = root.querySelectorAll<HTMLButtonElement>(".tab-btn");
+  const dateInput = root.querySelector<HTMLInputElement>(".header-date");
   let activeTab = TABS[0];
 
   const draw = (): void => {
     for (const button of buttons) {
       button.classList.toggle("is-active", button.dataset.tab === activeTab.id);
+    }
+    // The date picker only applies to Today; keep it in sync and hide elsewhere.
+    if (dateInput) {
+      const onToday = activeTab.id === "today";
+      dateInput.hidden = !onToday;
+      if (onToday) {
+        dateInput.value = app.viewDate;
+      }
     }
     if (screen) {
       activeTab.render(app, screen);
@@ -65,6 +75,13 @@ function render(root: HTMLElement, app: App): void {
   };
 
   app.onChange = draw;
+
+  dateInput?.addEventListener("change", () => {
+    if (dateInput.value) {
+      app.viewDate = dateInput.value;
+      draw();
+    }
+  });
 
   for (const button of buttons) {
     button.addEventListener("click", () => {

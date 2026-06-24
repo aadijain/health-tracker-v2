@@ -59,6 +59,14 @@ body {
   gap: 10px;
 }
 
+.app-header .header-date {
+  width: auto;
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 .app-title {
   display: flex;
   align-items: center;
@@ -265,6 +273,7 @@ body {
 input[type="text"],
 input[type="number"],
 input[type="search"],
+input[type="date"],
 select {
   width: 100%;
   padding: 10px 12px;

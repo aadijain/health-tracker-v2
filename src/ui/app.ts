@@ -14,6 +14,8 @@ export class App {
   db: Database = seedDb();
   readonly storage: Storage = createStorage();
   readonly today = todayStr();
+  /** The day the Today screen is showing; driven by the header date picker. */
+  viewDate = todayStr();
   connected = false;
   syncStatus: SyncStatus = "idle";
 
