@@ -44,15 +44,38 @@ export class App {
   /** Sign in to Google and load (or initialise) the Drive document. */
   async connect(): Promise<void> {
     await this.storage.auth.connect();
+    await this.loadFromDrive();
+    this.connected = true;
+    this.onChange?.();
+  }
+
+  /**
+   * Reconnect silently on startup using a cached token (survives page refresh),
+   * without prompting. No-op when there is no valid cached session.
+   */
+  async resume(): Promise<void> {
+    if (!this.storage.auth.isConnected()) {
+      return;
+    }
+    try {
+      await this.loadFromDrive();
+      this.connected = true;
+    } catch {
+      // Cached token was rejected (revoked/expired server-side): require reconnect.
+      this.storage.auth.disconnect();
+      this.connected = false;
+    }
+    this.onChange?.();
+  }
+
+  private async loadFromDrive(): Promise<void> {
     const text = await this.storage.sync.load();
     if (text !== null) {
       this.db = loadDb(text);
     } else {
-      // First connection for this account: persist what we have so far.
+      // First time for this account: persist what we have so far.
       this.storage.sync.queue(serializeDb(this.db));
     }
-    this.connected = true;
-    this.onChange?.();
   }
 
   disconnect(): void {

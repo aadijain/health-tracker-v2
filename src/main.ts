@@ -81,6 +81,9 @@ function render(root: HTMLElement, app: App): void {
   }
 
   draw();
+
+  // Reconnect from a cached token (if any) without prompting; redraws on success.
+  void app.resume();
 }
 
 const root = document.querySelector<HTMLElement>("#app");

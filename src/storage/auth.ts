@@ -39,6 +39,9 @@ const GIS_SRC = "https://accounts.google.com/gsi/client";
 /** Refresh a little before the real expiry to avoid using an about-to-die token. */
 const EXPIRY_SKEW_MS = 60_000;
 
+/** localStorage key holding the cached access token across page reloads. */
+const TOKEN_STORAGE_KEY = "ht2.googleToken";
+
 let scriptPromise: Promise<void> | null = null;
 
 function loadGisScript(): Promise<void> {
@@ -72,7 +75,9 @@ export class GoogleAuth {
   constructor(
     private readonly clientId: string,
     private readonly scope: string = DRIVE_SCOPE,
-  ) {}
+  ) {
+    this.restore();
+  }
 
   get isConfigured(): boolean {
     return this.clientId !== "";
@@ -102,6 +107,39 @@ export class GoogleAuth {
     }
     this.accessToken = null;
     this.expiresAt = 0;
+    this.persist();
+  }
+
+  /** Persist the current token so a page refresh stays connected until it expires. */
+  private persist(): void {
+    try {
+      if (this.accessToken && Date.now() < this.expiresAt) {
+        localStorage.setItem(
+          TOKEN_STORAGE_KEY,
+          JSON.stringify({ accessToken: this.accessToken, expiresAt: this.expiresAt }),
+        );
+      } else {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+      }
+    } catch {
+      // localStorage may be unavailable (private mode); degrade to in-memory only.
+    }
+  }
+
+  private restore(): void {
+    try {
+      const raw = localStorage.getItem(TOKEN_STORAGE_KEY);
+      if (!raw) {
+        return;
+      }
+      const saved = JSON.parse(raw) as { accessToken?: unknown; expiresAt?: unknown };
+      if (typeof saved.accessToken === "string" && typeof saved.expiresAt === "number") {
+        this.accessToken = saved.accessToken;
+        this.expiresAt = saved.expiresAt;
+      }
+    } catch {
+      // Ignore unreadable/corrupt stored tokens.
+    }
   }
 
   private async requestToken(prompt: string): Promise<string> {
@@ -144,6 +182,7 @@ export class GoogleAuth {
     this.accessToken = response.access_token;
     const lifetimeMs = (response.expires_in ?? 3600) * 1000;
     this.expiresAt = Date.now() + lifetimeMs - EXPIRY_SKEW_MS;
+    this.persist();
     pending?.resolve(response.access_token);
   }
 }
