@@ -163,6 +163,54 @@ body {
   cursor: pointer;
 }
 
+/* Daily summary rings */
+.summary {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  margin-bottom: 18px;
+}
+
+.gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.ring {
+  width: 92px;
+  height: 92px;
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 3.4;
+}
+
+.ring-value {
+  fill: none;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.ring-text {
+  fill: var(--text);
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.gauge-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* Cards */
 .card {
   background: var(--surface);

@@ -1,9 +1,11 @@
 /**
  * Today: log the day's weight, blood pressure, protein, and exercise.
- * Weight/BP save on blur; protein is logged from the food list; exercises are
- * checkboxes (Bonus Activity also has a free-text note).
+ * Summary rings show protein progress and exercises done. Weight/BP save on
+ * blur; protein is logged from the food list; exercises are checkboxes (Bonus
+ * Activity also has a free-text note).
  */
 
+import type { ProteinZone } from "../../config";
 import {
   type Food,
   deleteProteinEntry,
@@ -17,10 +19,22 @@ import { type App, tryWrite } from "../app";
 import { mountAutocomplete } from "../autocomplete";
 import { escapeHtml, formatNumber, parseNumber } from "../dom";
 
+const ZONE_COLOR: Record<ProteinZone | "none", string> = {
+  green: "#16a34a",
+  yellow: "#ca8a04",
+  orange: "#ea580c",
+  red: "#dc2626",
+  none: "#6b7280",
+};
+
 export function renderToday(app: App, container: HTMLElement): void {
   const day = getDay(app.db, app.today);
   const m = day.measurement;
   const zone = day.protein.zone;
+
+  const proteinPct =
+    day.protein.goal > 0 ? Math.round((day.protein.total / day.protein.goal) * 100) : 0;
+  const exerciseTotal = day.exercise.total;
 
   const entries = day.protein.entries
     .map(
@@ -53,6 +67,16 @@ export function renderToday(app: App, container: HTMLElement): void {
     .join("");
 
   container.innerHTML = `
+    <div class="summary">
+      ${ring(proteinPct, ZONE_COLOR[zone ?? "none"], `${proteinPct}%`, `Protein ${formatNumber(day.protein.total)}/${formatNumber(day.protein.goal)}g`)}
+      ${ring(
+        exerciseTotal > 0 ? (day.exercise.doneCount / exerciseTotal) * 100 : 0,
+        ZONE_COLOR.green,
+        String(day.exercise.doneCount),
+        "Exercise done",
+      )}
+    </div>
+
     <section class="card">
       <h3 class="card-title">Measurements</h3>
       <div class="field-row">
@@ -123,6 +147,21 @@ function foodsByRecency(app: App): Food[] {
     }
   }
   return [...recent, ...foods.filter((f) => !seen.has(f.name.toLowerCase()))];
+}
+
+/** An SVG progress ring (circumference 100) with centred text and a caption. */
+function ring(percent: number, color: string, center: string, caption: string): string {
+  const fill = Math.max(0, Math.min(100, percent));
+  return `
+    <div class="gauge">
+      <svg viewBox="0 0 36 36" class="ring" role="img" aria-label="${escapeHtml(caption)}">
+        <circle class="ring-track" cx="18" cy="18" r="15.915" />
+        <circle class="ring-value" cx="18" cy="18" r="15.915"
+          style="stroke:${color}; stroke-dasharray:${fill} 100" />
+        <text class="ring-text" x="18" y="18">${escapeHtml(center)}</text>
+      </svg>
+      <span class="gauge-label">${escapeHtml(caption)}</span>
+    </div>`;
 }
 
 function wire(app: App, container: HTMLElement): void {
