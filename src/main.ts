@@ -2,6 +2,7 @@ import { APP_NAME } from "./config";
 import "./style.css";
 import { App } from "./ui/app";
 import { mountErrorBanner } from "./ui/errorBanner";
+import { renderFoods } from "./ui/screens/foods";
 import { renderToday } from "./ui/screens/today";
 
 /** The primary navigation tabs, in display order. */
@@ -23,7 +24,7 @@ const TABS: readonly Tab[] = [
   { id: "today", label: "Today", icon: "☀️", render: renderToday },
   { id: "trends", label: "Trends", icon: "📈", render: placeholder("Trends") },
   { id: "activity", label: "Activity", icon: "🟩", render: placeholder("Activity") },
-  { id: "foods", label: "Foods", icon: "🥗", render: placeholder("Foods") },
+  { id: "foods", label: "Foods", icon: "🥗", render: renderFoods },
   { id: "settings", label: "Settings", icon: "⚙️", render: placeholder("Settings") },
 ];
 

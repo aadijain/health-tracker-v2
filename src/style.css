@@ -473,3 +473,60 @@ input:focus {
   flex: 1;
   max-width: 50%;
 }
+
+/* Foods */
+.add-form .btn {
+  margin-top: 4px;
+}
+
+.food-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.food-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.food-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+}
+
+.food-name {
+  font-weight: 600;
+}
+
+.food-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.food-edit {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.row-actions .btn {
+  flex: 1;
+}
