@@ -1,0 +1,14 @@
+{
+  "name": "Health Tracker",
+  "short_name": "Health",
+  "description": "A private, mobile-first health tracker that stores your data in your own Google Drive.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

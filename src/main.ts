@@ -1,5 +1,6 @@
 import { APP_NAME } from "./config";
 import "./style.css";
+import { registerServiceWorker } from "./pwa";
 import { App } from "./ui/app";
 import { mountErrorBanner } from "./ui/errorBanner";
 import { renderActivity } from "./ui/screens/activity";
@@ -103,3 +104,5 @@ const root = document.querySelector<HTMLElement>("#app");
 if (root) {
   render(root, new App());
 }
+
+registerServiceWorker();

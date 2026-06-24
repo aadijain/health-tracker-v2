@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Full-bleed background; artwork sits within the central safe zone for maskable. -->
+  <rect width="64" height="64" fill="#4f46e5"/>
+  <g transform="translate(32 32) scale(0.62) translate(-32 -32)">
+    <path d="M32 50C32 50 12 38.5 12 25.5C12 18.6 17.4 13.5 23.8 13.5C27.6 13.5 30.6 15.3 32 17.8C33.4 15.3 36.4 13.5 40.2 13.5C46.6 13.5 52 18.6 52 25.5C52 38.5 32 50 32 50Z" fill="#ffffff"/>
+    <path d="M15 31H25L28.5 23L33 38L37 27.5L39.5 31H49" fill="none" stroke="#4f46e5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
