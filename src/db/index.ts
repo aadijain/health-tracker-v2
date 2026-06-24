@@ -14,6 +14,7 @@ export {
   deleteProteinEntry,
 } from "./foods";
 export { type MeasurementFields, getMeasurement, upsertMeasurement } from "./measurements";
+export { exportCsv, exportJson, importCsv, importJson } from "./csv";
 export { getGoals, getGoal, setGoal, proteinGoal, exerciseTargets } from "./goals";
 export { type DayExercise, getExercises, setExercise } from "./exercise";
 export { type DaySnapshot, getDay, goalMet, proteinZone } from "./day";
