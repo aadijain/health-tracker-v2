@@ -2,6 +2,7 @@ import { APP_NAME } from "./config";
 import "./style.css";
 import { App } from "./ui/app";
 import { mountErrorBanner } from "./ui/errorBanner";
+import { renderActivity } from "./ui/screens/activity";
 import { renderFoods } from "./ui/screens/foods";
 import { renderSettings } from "./ui/screens/settings";
 import { renderToday } from "./ui/screens/today";
@@ -16,16 +17,10 @@ interface Tab {
   render: (app: App, container: HTMLElement) => void;
 }
 
-function placeholder(label: string): (app: App, container: HTMLElement) => void {
-  return (_app, container) => {
-    container.innerHTML = `<p class="empty">${label} is coming soon.</p>`;
-  };
-}
-
 const TABS: readonly Tab[] = [
   { id: "today", label: "Today", icon: "☀️", render: renderToday },
   { id: "trends", label: "Trends", icon: "📈", render: renderTrends },
-  { id: "activity", label: "Activity", icon: "🟩", render: placeholder("Activity") },
+  { id: "activity", label: "Activity", icon: "🟩", render: renderActivity },
   { id: "foods", label: "Foods", icon: "🥗", render: renderFoods },
   { id: "settings", label: "Settings", icon: "⚙️", render: renderSettings },
 ];
