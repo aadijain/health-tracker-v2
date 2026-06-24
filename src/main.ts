@@ -3,6 +3,7 @@ import "./style.css";
 import { App } from "./ui/app";
 import { mountErrorBanner } from "./ui/errorBanner";
 import { renderFoods } from "./ui/screens/foods";
+import { renderSettings } from "./ui/screens/settings";
 import { renderToday } from "./ui/screens/today";
 
 /** The primary navigation tabs, in display order. */
@@ -25,7 +26,7 @@ const TABS: readonly Tab[] = [
   { id: "trends", label: "Trends", icon: "📈", render: placeholder("Trends") },
   { id: "activity", label: "Activity", icon: "🟩", render: placeholder("Activity") },
   { id: "foods", label: "Foods", icon: "🥗", render: renderFoods },
-  { id: "settings", label: "Settings", icon: "⚙️", render: placeholder("Settings") },
+  { id: "settings", label: "Settings", icon: "⚙️", render: renderSettings },
 ];
 
 function render(root: HTMLElement, app: App): void {
