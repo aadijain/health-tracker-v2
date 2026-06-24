@@ -1,5 +1,7 @@
 import { APP_NAME } from "./config";
 import "./style.css";
+import { App } from "./ui/app";
+import { mountErrorBanner } from "./ui/errorBanner";
 
 /** The primary navigation tabs, in display order. */
 interface Tab {
@@ -7,17 +9,24 @@ interface Tab {
   label: string;
   /** Emoji icon shown in the bottom navigation. */
   icon: string;
+  render: (app: App, container: HTMLElement) => void;
+}
+
+function placeholder(label: string): (app: App, container: HTMLElement) => void {
+  return (_app, container) => {
+    container.innerHTML = `<p class="empty">${label} is coming soon.</p>`;
+  };
 }
 
 const TABS: readonly Tab[] = [
-  { id: "today", label: "Today", icon: "☀️" },
-  { id: "trends", label: "Trends", icon: "📈" },
-  { id: "activity", label: "Activity", icon: "🟩" },
-  { id: "foods", label: "Foods", icon: "🥗" },
-  { id: "settings", label: "Settings", icon: "⚙️" },
+  { id: "today", label: "Today", icon: "☀️", render: placeholder("Today") },
+  { id: "trends", label: "Trends", icon: "📈", render: placeholder("Trends") },
+  { id: "activity", label: "Activity", icon: "🟩", render: placeholder("Activity") },
+  { id: "foods", label: "Foods", icon: "🥗", render: placeholder("Foods") },
+  { id: "settings", label: "Settings", icon: "⚙️", render: placeholder("Settings") },
 ];
 
-function render(root: HTMLElement): void {
+function render(root: HTMLElement, app: App): void {
   root.innerHTML = `
     <header class="app-header">
       <div class="bar">
@@ -40,32 +49,38 @@ function render(root: HTMLElement): void {
       </div>
     </nav>`;
 
+  const banner = mountErrorBanner(root);
+  app.onError = (message) => banner.show(message);
+
   const screen = root.querySelector<HTMLElement>("#screen");
   const buttons = root.querySelectorAll<HTMLButtonElement>(".tab-btn");
+  let activeTab = TABS[0];
 
-  const select = (id: string): void => {
-    const tab = TABS.find((t) => t.id === id) ?? TABS[0];
+  const draw = (): void => {
     for (const button of buttons) {
-      button.classList.toggle("is-active", button.dataset.tab === tab.id);
+      button.classList.toggle("is-active", button.dataset.tab === activeTab.id);
     }
     if (screen) {
-      screen.innerHTML = `<h2 class="screen-title">${tab.label}</h2>`;
+      activeTab.render(app, screen);
     }
   };
 
+  app.onChange = draw;
+
   for (const button of buttons) {
     button.addEventListener("click", () => {
-      const id = button.dataset.tab;
-      if (id) {
-        select(id);
+      const tab = TABS.find((t) => t.id === button.dataset.tab);
+      if (tab) {
+        activeTab = tab;
+        draw();
       }
     });
   }
 
-  select(TABS[0].id);
+  draw();
 }
 
 const root = document.querySelector<HTMLElement>("#app");
 if (root) {
-  render(root);
+  render(root, new App());
 }
