@@ -119,6 +119,7 @@ body {
 }
 
 .tab-btn {
+  position: relative;
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -136,10 +137,16 @@ body {
 .tab-btn .ico {
   font-size: 1.25rem;
   line-height: 1;
+  transition: transform 0.15s ease;
 }
 
 .tab-btn.is-active {
   color: var(--primary);
+  font-weight: 700;
+}
+
+.tab-btn.is-active .ico {
+  transform: scale(1.18);
 }
 
 /* Error banner */
@@ -696,4 +703,59 @@ canvas[data-chart] {
 }
 .heatmap .lvl-4 {
   background: #1b5e20;
+}
+
+/* Desktop: move the tab bar to the top (below the header) instead of fixed bottom. */
+@media (min-width: 768px) {
+  /* Wider centred column than the mobile 560px. */
+  .bar,
+  .screen {
+    max-width: 840px;
+  }
+
+  .app-header {
+    order: 1;
+  }
+
+  .tab-bar {
+    order: 2;
+    position: static;
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .tab-bar .bar {
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .tab-btn {
+    flex: 0 0 auto;
+    flex-direction: row;
+    gap: 8px;
+    padding: 12px 18px;
+    font-size: 0.85rem;
+  }
+
+  .tab-btn .ico {
+    font-size: 1rem;
+  }
+
+  /* Full-width underline on the active tab (top nav only). */
+  .tab-btn.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--primary);
+  }
+
+  .screen {
+    order: 3;
+    padding-bottom: 16px;
+  }
 }
