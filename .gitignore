@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local environment (holds the Google OAuth client ID)
+.env
+.env.local
+.env.*.local
+
+# Editor / OS
+.DS_Store
+*.log
+
+# Test coverage
+coverage/
+
+# Project assistant guide (not part of the codebase)
+CLAUDE.md
