@@ -318,6 +318,13 @@ input:focus {
   border: 1px solid var(--border);
 }
 
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
 .btn.danger {
   background: var(--danger);
 }
