@@ -5,6 +5,7 @@ import { mountErrorBanner } from "./ui/errorBanner";
 import { renderFoods } from "./ui/screens/foods";
 import { renderSettings } from "./ui/screens/settings";
 import { renderToday } from "./ui/screens/today";
+import { renderTrends } from "./ui/screens/trends";
 
 /** The primary navigation tabs, in display order. */
 interface Tab {
@@ -23,7 +24,7 @@ function placeholder(label: string): (app: App, container: HTMLElement) => void 
 
 const TABS: readonly Tab[] = [
   { id: "today", label: "Today", icon: "☀️", render: renderToday },
-  { id: "trends", label: "Trends", icon: "📈", render: placeholder("Trends") },
+  { id: "trends", label: "Trends", icon: "📈", render: renderTrends },
   { id: "activity", label: "Activity", icon: "🟩", render: placeholder("Activity") },
   { id: "foods", label: "Foods", icon: "🥗", render: renderFoods },
   { id: "settings", label: "Settings", icon: "⚙️", render: renderSettings },

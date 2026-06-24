@@ -559,3 +559,98 @@ input:focus {
 .card .field {
   margin-bottom: 10px;
 }
+
+/* Trends */
+.trend-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.trend-controls select {
+  flex: 1;
+}
+
+.seg {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.seg-btn {
+  border: none;
+  background: var(--surface);
+  color: var(--muted);
+  padding: 0 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.seg-btn.is-active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.period-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.period-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.period-nav .link-btn {
+  font-size: 1.5rem;
+  color: var(--primary);
+  padding: 0 12px;
+}
+
+.period-nav .link-btn:disabled {
+  color: var(--border);
+  cursor: default;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat strong {
+  font-size: 1.3rem;
+}
+
+.stat span {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.per-ex {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.per-ex li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 0.9rem;
+}
+
+canvas[data-chart] {
+  width: 100% !important;
+}
