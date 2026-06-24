@@ -186,8 +186,8 @@ export const CSV_TABLES: Readonly<Record<string, readonly string[]>> = {
 
 // --- Storage -------------------------------------------------------------
 
-// Name of the SQLite database file kept in the user's private Drive app folder.
-export const DRIVE_DB_FILENAME = "health-tracker.db";
+// Name of the JSON data file kept in the user's private Drive app folder.
+export const DRIVE_DB_FILENAME = "health-tracker.json";
 
 // OAuth scope: a per-app, per-user hidden folder. The app can only see files it
 // creates, and the data never leaves the user's own Drive.
