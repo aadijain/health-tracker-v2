@@ -277,12 +277,56 @@ input:focus {
   align-items: center;
 }
 
-.log-form .grow {
+.log-form .qty {
+  width: 64px;
+}
+
+/* Food autocomplete */
+.autocomplete {
+  position: relative;
   flex: 1;
 }
 
-.log-form .qty {
-  width: 64px;
+.ac-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 30;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.ac-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ac-item.is-active,
+.ac-item:hover {
+  background: var(--bg);
+}
+
+.ac-name {
+  font-weight: 600;
+}
+
+.ac-detail {
+  color: var(--muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .log-list {
